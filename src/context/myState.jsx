@@ -151,7 +151,7 @@ function MyState(props) {
         edithandle,
         updateProduct,
         deleteProduct,
-        searchkey,
+        searchkey, 
         setSearchkey,
         filterType,
         setFilterType,
