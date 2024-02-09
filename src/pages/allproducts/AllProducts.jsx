@@ -30,7 +30,7 @@ function Allproducts() {
               className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900"
               style={{ color: mode === "dark" ? "white" : "" }}
             >
-              Our Latest Collection
+              Our Latest Medicines
             </h1>
             <div className="h-1 w-20 bg-pink-600 rounded"></div>
           </div>

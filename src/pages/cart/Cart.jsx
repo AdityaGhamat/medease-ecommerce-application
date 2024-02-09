@@ -5,6 +5,9 @@ import Modal from "../../components/modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { deleteFromCart } from "../../redux/cartSlice";
+import { addDoc, collection } from "@firebase/firestore";
+import { fireDB } from "../../firebase/FirebaseConfig";
+import { useNavigate } from "react-router-dom";
 function Cart() {
   const context = useContext(myContext);
   const { mode } = context;
@@ -20,6 +23,11 @@ function Cart() {
   }, [cartItems]);
 
   const [totalAmount, setTotalAmount] = useState(0);
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   useEffect(() => {
     let temp = 0;
     cartItems.forEach((cartItem) => {
@@ -30,10 +38,48 @@ function Cart() {
   }, [cartItems]);
   const shipping = parseInt(100);
   const grandTotal = shipping + totalAmount;
+
+  const buyNow = async () => {
+    if (name === "" || address === "" || pincode === "" || phoneNumber === "") {
+      return toast.error("All fields are required to fill");
+    }
+
+    const addressInfo = {
+      name,
+      address,
+      pincode,
+      phoneNumber,
+      date: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
+    };
+
+    const orderInfo = {
+      cartItems,
+      addressInfo,
+      date: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
+      email: JSON.parse(localStorage.getItem("user")).user.email,
+      userid: JSON.parse(localStorage.getItem("user")).user.uid,
+    };
+    try {
+      const result = await addDoc(collection(fireDB, "orders"), orderInfo);
+      console.log("Order placed successfully:", result);
+      navigate("/cart");
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
+  };
+
   return (
     <Layout>
       <div
-        className="h-screen bg-gray-100 pt-5 mb-[60%] "
+        className="h-screen bg-gray-100 pt-5  "
         style={{
           backgroundColor: mode === "dark" ? "#282c34" : "",
           color: mode === "dark" ? "white" : "",
@@ -42,10 +88,10 @@ function Cart() {
         <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0 ">
           <div className="rounded-lg md:w-2/3 ">
-            {cartItems.map((item, index) => {
+            {cartItems.map((item) => {
               return (
                 <div
-                  key={index}
+                  key={item.id}
                   className="justify-between mb-6 rounded-lg border  drop-shadow-xl bg-white p-6  sm:flex  sm:justify-start"
                   style={{
                     backgroundColor: mode === "dark" ? "rgb(32 33 34)" : "",
@@ -80,7 +126,7 @@ function Cart() {
                     </div>
                     <div
                       onClick={() => deleteCart(item)}
-                      className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6"
+                      className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6 cursor-pointer"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -156,7 +202,17 @@ function Cart() {
               </div>
             </div>
             {/* <Modal  /> */}
-            <Modal />
+            <Modal
+              name={name}
+              address={address}
+              pincode={pincode}
+              phoneNumber={phoneNumber}
+              setName={setName}
+              setAddress={setAddress}
+              setPincode={setPincode}
+              setPhoneNumber={setPhoneNumber}
+              buyNow={buyNow}
+            />
           </div>
         </div>
       </div>

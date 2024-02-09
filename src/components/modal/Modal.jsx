@@ -1,7 +1,17 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
-export default function Modal() {
+export default function Modal({
+  name,
+  address,
+  pincode,
+  phoneNumber,
+  setName,
+  setAddress,
+  setPincode,
+  setPhoneNumber,
+  buyNow,
+}) {
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -66,6 +76,8 @@ export default function Modal() {
                                 type="name"
                                 name="name"
                                 id="name"
+                                onChange={(e) => setName(e.target.value)}
+                                value={name}
                                 className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100"
                                 required
                               />
@@ -81,6 +93,8 @@ export default function Modal() {
                                 type="text"
                                 name="address"
                                 id="address"
+                                onChange={(e) => setAddress(e.target.value)}
+                                value={address}
                                 className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100"
                                 required
                               />
@@ -96,6 +110,8 @@ export default function Modal() {
                                 type="text"
                                 name="pincode"
                                 id="pincode"
+                                onChange={(e) => setPincode(e.target.value)}
+                                value={pincode}
                                 className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100"
                                 required
                               />
@@ -111,13 +127,18 @@ export default function Modal() {
                                 type="text"
                                 name="mobileNumber"
                                 id="mobileNumber"
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                value={phoneNumber}
                                 className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100"
                                 required
                               />
                             </div>
                           </form>
                           <button
-                            onClick={closeModal}
+                            onClick={() => {
+                              buyNow();
+                              closeModal();
+                            }}
                             type="button"
                             className="focus:outline-none w-full text-white bg-violet-600 bg-green-600 hover:bg-violet-800  outline-0 font-medium rounded-lg text-sm px-5 py-2.5 "
                           >

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 function DashboardTab() {
   const context = useContext(myContext);
-  const { mode, product, edithandle, deleteProduct } = context;
+  const { mode, product, edithandle, deleteProduct, order } = context;
   console.log(product);
   let [isOpen, setIsOpen] = useState(false);
 
@@ -118,10 +118,11 @@ function DashboardTab() {
                         </th>
                       </tr>
                     </thead>
-                    {product.map((item, index) => {
-                      const { title, price, imageUrl, category, date } = item;
+                    {product.map((item) => {
+                      const { title, price, imageUrl, category, date, id } =
+                        item;
                       return (
-                        <tbody className="" key={index}>
+                        <tbody className="" key={id}>
                           <tr
                             className="bg-gray-50 border-b  dark:border-gray-700"
                             style={{

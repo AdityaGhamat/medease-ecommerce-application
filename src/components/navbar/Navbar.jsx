@@ -65,7 +65,7 @@ export default function Navbar() {
                     <RxCross2 />
                   </button>
                 </div>
-                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                <div className="space-y-6 border-t border-gray-200 px-4 py-6 flex flex-col">
                   <Link
                     to={"/allproducts"}
                     className="text-sm font-medium text-gray-900 "
@@ -87,7 +87,7 @@ export default function Navbar() {
                     " "
                   )}
 
-                  {user?.user?.email === "knupadhyay784@gmail.com" ? (
+                  {user?.user?.email === "adminstatus@medease.com" ? (
                     <div className="flow-root">
                       <Link
                         to={"/dashboard"}
@@ -118,7 +118,7 @@ export default function Navbar() {
                       Signup
                     </Link>
                   )}
-                  <div className="flow-root">
+                  {/* <div className="flow-root">
                     <Link
                       to={"/"}
                       className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer"
@@ -129,7 +129,7 @@ export default function Navbar() {
                         alt="Dan_Abromov"
                       />{" "}
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="border-t border-gray-200 px-4 py-6">

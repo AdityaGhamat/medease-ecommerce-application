@@ -7,6 +7,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -42,7 +43,7 @@ function MyState(props) {
     }),
   });
 
-  // ********************** Add Product Section  **********************
+  // Add Product Section
   const addProduct = async () => {
     if (
       products.title == null ||
@@ -73,7 +74,7 @@ function MyState(props) {
 
   const [product, setProduct] = useState([]);
 
-  // ****** get product
+  // get product
   const getProductData = async () => {
     setLoading(true);
     try {
@@ -97,11 +98,6 @@ function MyState(props) {
     }
   };
 
-  useEffect(() => {
-    getProductData();
-  }, []);
-
-  //*****update product
   const edithandle = (item) => {
     setProducts(item);
   };
@@ -128,13 +124,33 @@ function MyState(props) {
       setLoading(false);
       getProductData();
     } catch (error) {
-      // toast.success('Product Deleted Falied')
       setLoading(false);
     }
   };
   const [searchkey, setSearchkey] = useState("");
   const [filterType, setFilterType] = useState("");
   const [filterPrice, setFilterPrice] = useState("");
+
+  const [order, setOrder] = useState([]);
+  const getOrderData = async () => {
+    setLoading(true);
+    try {
+      const result = await getDocs(collection(fireDB, "orders"));
+      const orderArray = [];
+      result.forEach((doc) => {
+        orderArray.push(doc.data());
+        setOrder(orderArray);
+        setLoading(false);
+      });
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    getProductData();
+    getOrderData();
+  }, []);
 
   return (
     <MyContext.Provider
@@ -151,12 +167,13 @@ function MyState(props) {
         edithandle,
         updateProduct,
         deleteProduct,
-        searchkey, 
+        searchkey,
         setSearchkey,
         filterType,
         setFilterType,
         filterPrice,
         setFilterPrice,
+        order,
       }}
     >
       {props.children}
