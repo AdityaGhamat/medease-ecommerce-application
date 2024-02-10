@@ -118,7 +118,7 @@ function DashboardTab() {
                         </th>
                       </tr>
                     </thead>
-                    {product.map((item) => {
+                    {product.map((item, index) => {
                       const { title, price, imageUrl, category, date, id } =
                         item;
                       return (
